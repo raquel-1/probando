@@ -4,12 +4,29 @@
 		<meta charset="utf-8" />
 		<link rel="icon" href="%sveltekit.assets%/favicon.png" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Poor+Story&display=swap" rel="stylesheet">
+		<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">
 		<div style="display: contents">%sveltekit.body%</div>
 	</body>
 	<style>
+		*{
+			box-sizing: border-box;
+			padding: 0;
+			margin: 0;
+			font-family: "Poor Story", system-ui;
+			transition-duration: 200ms;
+		}
 		body {
 			--bg-1: hsl(0, 0%, 100%);
 			--bg-2: hsl(206, 20%, 90%);
@@ -29,7 +46,6 @@
 			color: var(--fg-1);
 			font-family: var(--font);
 			line-height: 1.5;
-			margin: 1rem;
 			height: calc(100vh - 2rem);
 		}
 
