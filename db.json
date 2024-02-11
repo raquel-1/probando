@@ -19,11 +19,6 @@
       "id": "14",
       "titulo": "Preparar la comida",
       "completada": false
-    },
-    {
-      "titulo": "queso",
-      "completada": false,
-      "id": "15"
     }
   ]
 }

@@ -8,6 +8,18 @@ export async function getAllTasks() {
     return response.json();
 }
 
+export async function getTasks() {
+    try {
+        const response = await fetch(`${baseURL}/tareas`);
+        if (!response.ok) {
+            throw new Error('Error al obtener las tareas');
+        }
+        return await response.json();
+    } catch (error) {
+        throw new Error('Error al procesar la solicitud: ' + error.message);
+    }
+}
+
 // Función para agregar una nueva tarea en el servidor
 export async function addTask(title) {
     try {
