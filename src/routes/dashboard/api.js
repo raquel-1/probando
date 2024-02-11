@@ -14,11 +14,11 @@ export async function addTask(title) {
         // Obtener todas las tareas existentes
         const tasks = await getAllTasks();
 
-        // Obtener el último ID
-        const lastId = tasks[tasks.length - 1].id;
+        // Obtener el último ID o establecerlo en 0 si no hay tareas
+        const lastId = tasks.length > 0 ? parseInt(tasks[tasks.length - 1].id) : 0;
 
         // Calcular el nuevo ID sumándole 1 al último ID
-        const newId = parseInt(lastId) + 1;
+        const newId = lastId + 1;
 
         // Enviar la solicitud POST con el nuevo ID
         const response = await fetch(`${baseURL}/tareas`, {
@@ -26,7 +26,7 @@ export async function addTask(title) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ id: newId.toString(), titulo: title })
+            body: JSON.stringify({ id: newId.toString(), titulo: title, completada: false})
         });
 
         if (!response.ok) {
@@ -40,8 +40,22 @@ export async function addTask(title) {
 }
 
 
-// Otras funciones para manejar otras operaciones CRUD, como actualizar y eliminar tareas, según sea necesario
+// Función para eliminar una tarea en el servidor
+export async function deleteTask(taskId) {
+    try {
+        const response = await fetch(`${baseURL}/tareas/${taskId}`, {
+            method: 'DELETE'
+        });
 
+        if (!response.ok) {
+            throw new Error('Error al eliminar la tarea');
+        }
+
+        return true; // Indica que la tarea se eliminó correctamente
+    } catch (error) {
+        throw new Error('Error al procesar la solicitud: ' + error.message);
+    }
+}
 
 
 

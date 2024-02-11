@@ -3,49 +3,52 @@
 //39:20 / 1:20:46
 //https://www.youtube.com/watch?v=TIbL0VOE900
 
-import { addTask, getAllTasks } from './api.js';
+import { addTask, deleteTask } from './api.js';
 
 export let data;
 console.log(data);
 console.log(data);
 
 
-let error=false;
-
 
 let nuevoTitulo = '';
 
-async function handleSubmit(event) {
-    event.preventDefault();
-    try {
-      const nuevaTarea = await addTask(nuevoTitulo);
-      console.log('Nueva tarea agregada:', nuevaTarea);
-      // Actualiza la lista de tareas o realiza otras acciones necesarias
-    } catch (error) {
-      console.error('Error al agregar nueva tarea:', error);
-    }
-}
-/*
-async function handleeSubmit(event) {
-    event.preventDefault();
-    try {
-        const nuevaTarea = await addTask(nuevoTitulo);
-        console.log('Nueva tarea agregada:', nuevaTarea);
-        
-        // Actualiza los datos obteniendo todas las tareas nuevamente
-        const updatedData = await getAllTasks();
-        $data = updatedData;
-        
-        // Limpia el campo del nuevo título
-        nuevoTitulo = '';
-    } catch (error) {
-        console.error('Error al agregar nueva tarea:', error);
-    }
+async function addSubmit(event) {
+        event.preventDefault();
+        try {
+            const nuevaTarea = await addTask(nuevoTitulo);
+            console.log('Nueva tarea agregada:', nuevaTarea);
+            // Recargar la página después de agregar la tarea
+            location.reload();
+        } catch (error) {
+            console.error('Error al agregar nueva tarea:', error);
+        }
 }
 
-*/
+// Define la función eliminarTarea
+async function eliminarTarea(taskId) {
+    try {
+      const deleted = await deleteTask(taskId);
+      if (deleted) {
+        // Si la tarea se eliminó correctamente, actualiza los datos de las tareas
+        // Aquí puedes recargar los datos de las tareas o actualizar el estado de tu componente según sea necesario
+        console.log('Tarea eliminada correctamente');
+        // Recargar la página después de agregar la tarea
+        location.reload();
+      } else {
+        console.error('Error al eliminar la tarea');
+      }
+    } catch (error) {
+      console.error('Error al eliminar la tarea:', error);
+    }
+  }
+
+
+
+
+
+
 </script>
-
 
 
 <div class="mainContainer">
@@ -66,14 +69,14 @@ async function handleeSubmit(event) {
                 <p id="todoItem-${index}">{index +1}.{todo.titulo}</p>
                 <div class="acciones">
                     <i class="far fa-edit"></i>
-                    <i class="far fa-trash-alt"></i>
+                    <i class="far fa-trash-alt" on:click={() => eliminarTarea(todo.id)}></i>
                 </div>
             </div>
         {/each}
     </main>
 
     <!-- Formulario para agregar una nueva tarea -->
-<form on:submit={handleSubmit}  class="enterTodo " >
+<form on:submit={addSubmit}  class="enterTodo " >
     <input type="text" bind:value={nuevoTitulo} placeholder="Ingrese el título de la nueva tarea" required />
     <button type="submit">ADD</button>
 </form>
