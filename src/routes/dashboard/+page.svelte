@@ -3,26 +3,30 @@
 //39:20 / 1:20:46
 //https://www.youtube.com/watch?v=TIbL0VOE900
 
-import { addTask, deleteTask } from './api.js';
+import { addTask, deleteTask, patchTask, putTask } from './api.js';
 
 export let data;
-console.log(data);
-console.log(data);
 
 
 
 let nuevoTitulo = '';
+let editingTaskId = null;
+
+async function idEditar(taskId) {
+    editingTaskId = taskId;
+}
+
 
 async function addSubmit(event) {
-        event.preventDefault();
-        try {
-            const nuevaTarea = await addTask(nuevoTitulo);
-            console.log('Nueva tarea agregada:', nuevaTarea);
-            // Recargar la página después de agregar la tarea
-            location.reload();
-        } catch (error) {
-            console.error('Error al agregar nueva tarea:', error);
-        }
+    event.preventDefault();
+    try {
+        const nuevaTarea = await addTask(nuevoTitulo);
+        console.log('Nueva tarea agregada:', nuevaTarea);
+        // Recargar la página después de agregar la tarea
+        location.reload();
+    } catch (error) {
+        console.error('Error al agregar nueva tarea:', error);
+    }
 }
 
 // Define la función eliminarTarea
@@ -33,7 +37,7 @@ async function eliminarTarea(taskId) {
         // Si la tarea se eliminó correctamente, actualiza los datos de las tareas
         // Aquí puedes recargar los datos de las tareas o actualizar el estado de tu componente según sea necesario
         console.log('Tarea eliminada correctamente');
-        // Recargar la página después de agregar la tarea
+        // Recargar la página después de eliminar la tarea
         location.reload();
       } else {
         console.error('Error al eliminar la tarea');
@@ -41,7 +45,37 @@ async function eliminarTarea(taskId) {
     } catch (error) {
       console.error('Error al eliminar la tarea:', error);
     }
-  }
+}
+
+async function editarTarea(taskId, updatedTask) {
+    try {
+        const updated = await patchTask(taskId, updatedTask); // Utilizar patchTask para actualizar parcialmente la tarea
+        console.log('Tarea actualizada:', updated);
+        // Aquí puedes realizar otras acciones después de la actualización, como recargar los datos o actualizar el estado
+    } catch (error) {
+        console.error('Error al editar la tarea:', error);
+    }
+}
+
+async function guardarEdicion(event, taskId, updatedTask) {
+    event.preventDefault();
+    try {
+        // Verificar si el campo completada existe en updatedTask
+        if (!updatedTask.hasOwnProperty('completada')) {
+            // Si no existe, agregarlo con el valor false
+            updatedTask.completada = false;
+        }
+        
+        // Enviar la solicitud al servidor para actualizar la tarea
+        const updated = await putTask(taskId, updatedTask);
+        
+        console.log('Tarea actualizada:', updated);
+        editingTaskId = null;
+        location.reload();
+    } catch (error) {
+        console.error('Error al guardar la edición de la tarea:', error);
+    }
+}
 
 
 
@@ -66,13 +100,22 @@ async function eliminarTarea(taskId) {
         {/if}
         {#each data.tareas as todo, index}
             <div class="todo">
-                <p id="todoItem-${index}">{index +1}.{todo.titulo}</p>
+                {#if editingTaskId === todo.id}
+                    <form on:submit={(e) => e.preventDefault()} class="enterTodo">
+                        <input type="text" bind:value={todo.titulo}>
+                        <button type="button" on:click={() => guardarEdicion(event, todo.id, { titulo: todo.titulo })}>Guardar</button>
+                    </form>
+                {:else}
+                    <p id="todoItem-{todo.id}" onclick={() => editingTaskId = todo.id}>{index + 1}.{todo.titulo}</p>
+                {/if}
+
                 <div class="acciones">
-                    <i class="far fa-edit"></i>
+                    <i class="far fa-edit"on:click={() => idEditar(todo.id)}></i>
                     <i class="far fa-trash-alt" on:click={() => eliminarTarea(todo.id)}></i>
                 </div>
             </div>
         {/each}
+
     </main>
 
     <!-- Formulario para agregar una nueva tarea -->

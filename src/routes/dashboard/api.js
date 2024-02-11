@@ -57,5 +57,45 @@ export async function deleteTask(taskId) {
     }
 }
 
+// Función para actualizar una tarea en el servidor utilizando el método PATCH
+export async function patchTask(taskId, updates) {
+    try {
+        const response = await fetch(`${baseURL}/tareas/${taskId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updates)
+        });
 
+        if (!response.ok) {
+            throw new Error('Error al actualizar la tarea');
+        }
+
+        return await response.json();
+    } catch (error) {
+        throw new Error('Error al procesar la solicitud: ' + error.message);
+    }
+}
+
+// Función para actualizar una tarea en el servidor utilizando el método PUT
+export async function putTask(taskId, updatedTask) {
+    try {
+        const response = await fetch(`${baseURL}/tareas/${taskId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(updatedTask)
+        });
+
+        if (!response.ok) {
+            throw new Error('Error al actualizar la tarea');
+        }
+
+        return await response.json();
+    } catch (error) {
+        throw new Error('Error al procesar la solicitud: ' + error.message);
+    }
+}
 
