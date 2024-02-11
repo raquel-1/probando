@@ -1,40 +1,89 @@
 <script>
 
+//39:20 / 1:20:46
+//https://www.youtube.com/watch?v=TIbL0VOE900
 
-let todoList=['haz tus cosas vago'];
-let currTodo='';
+import { addTask, getAllTasks } from './api.js';
+
+export let data;
+console.log(data);
+console.log(data);
+
+
 let error=false;
 
-function addTodo() {
-    error = false;
-    if (!currTodo.trim()) {
-        error = true;
-    }else{
-        todoList = [...todoList, currTodo];
+
+let nuevoTitulo = '';
+
+async function handleSubmit(event) {
+    event.preventDefault();
+    try {
+      const nuevaTarea = await addTask(nuevoTitulo);
+      console.log('Nueva tarea agregada:', nuevaTarea);
+      // Actualiza la lista de tareas o realiza otras acciones necesarias
+    } catch (error) {
+      console.error('Error al agregar nueva tarea:', error);
     }
-    currTodo = "";
+}
+/*
+async function handleeSubmit(event) {
+    event.preventDefault();
+    try {
+        const nuevaTarea = await addTask(nuevoTitulo);
+        console.log('Nueva tarea agregada:', nuevaTarea);
+        
+        // Actualiza los datos obteniendo todas las tareas nuevamente
+        const updatedData = await getAllTasks();
+        $data = updatedData;
+        
+        // Limpia el campo del nuevo título
+        nuevoTitulo = '';
+    } catch (error) {
+        console.error('Error al agregar nueva tarea:', error);
+    }
 }
 
+*/
 </script>
 
 
 
 <div class="mainContainer">
     <div class="headerContainer">
-        <h1>Todo List</h1>
-        <button><i class="fa fa-save"></i><p>Guardar</p></button>
+        <h1>{data.title}</h1>
+        <div class="headerBotones">
+            <button><i class="fa fa-save"></i><p>Guardar</p></button>
+            <button><i class="fa fa-sign-out"></i><p>Logout</p></button>
+
+        </div>
     </div>
     <main>
-        {#each todoList as todo, index}
+        {#if  data.tareas.length==0}
+            <p> Nada por hacer</p>
+        {/if}
+        {#each data.tareas as todo, index}
             <div class="todo">
-                {index +1}.{todo}
+                <p id="todoItem-${index}">{index +1}.{todo.titulo}</p>
+                <div class="acciones">
+                    <i class="far fa-edit"></i>
+                    <i class="far fa-trash-alt"></i>
+                </div>
             </div>
         {/each}
     </main>
-    <div class={"enterTodo " + (error ? "errorBorder" : "")}>
-        <input bind:value={currTodo} type="text" placeholder="Enter"/>
-        <button on:click={addTodo}>ADD</button>
+
+    <!-- Formulario para agregar una nueva tarea -->
+<form on:submit={handleSubmit}  class="enterTodo " >
+    <input type="text" bind:value={nuevoTitulo} placeholder="Ingrese el título de la nueva tarea" required />
+    <button type="submit">ADD</button>
+</form>
+<!--
+<div class={"enterTodo " + (error ? "errorBorder" : "")}>
+        <input type="text" placeholder="Inserta tarea"/>
+        <button >ADD</button>
     </div>
+-->
+    
 </div>
 
 
@@ -60,6 +109,13 @@ function addTodo() {
     align-items: center;
     justify-content: space-between;
 }
+
+.headerBotones{
+    display: flex;
+    align-items: center;
+    gap:1rem;
+}
+
 .headerContainer button{
     padding: .5rem 1rem;
     background-color: purple;
@@ -101,15 +157,33 @@ main{
 
 .todo{
     border-left: 1px solid purple;
-    padding: .4rem  .7rem;
+    padding: .5rem  .8rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
 
+.acciones{
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    font-size: 1.3rem;
+}
+
+.acciones i:hover{
+    color:rgb(255, 0, 136);
+}
+
+.acciones i{
+    cursor: pointer;
+}
+
+
+
 .enterTodo{
     display: flex;
     align-items: stretch;
+    flex-direction: row;
     min-width: 40%;
     border: 1px solid purple;
     overflow: hidden;
