@@ -47,17 +47,20 @@ async function eliminarTarea(taskId) {
     }
 }
 
-async function editarTarea(taskId, updatedTask) {
+async function actualizarPatch(taskId, updatedTask) {
     try {
         const updated = await patchTask(taskId, updatedTask); // Utilizar patchTask para actualizar parcialmente la tarea
         console.log('Tarea actualizada:', updated);
         // Aquí puedes realizar otras acciones después de la actualización, como recargar los datos o actualizar el estado
+        console.log('Tarea actualizada:', updated);
+        editingTaskId = null;
+        location.reload();
     } catch (error) {
         console.error('Error al editar la tarea:', error);
     }
 }
 
-async function guardarEdicion(event, taskId, updatedTask) {
+async function actualizarPut(event, taskId, updatedTask) {
     event.preventDefault();
     try {
         // Verificar si el campo completada existe en updatedTask
@@ -103,7 +106,11 @@ async function guardarEdicion(event, taskId, updatedTask) {
                 {#if editingTaskId === todo.id}
                     <form on:submit={(e) => e.preventDefault()} class="enterTodo">
                         <input type="text" bind:value={todo.titulo}>
-                        <button type="button" on:click={() => guardarEdicion(event, todo.id, { titulo: todo.titulo })}>Guardar</button>
+                        <!--
+                            <button type="button" on:click={() => actualizarPut(event, todo.id, { titulo: todo.titulo })}>Guardar</button>
+                        -->
+                        <button type="button" on:click={() => actualizarPatch(todo.id, { titulo: todo.titulo })}>Guardar</button>
+
                     </form>
                 {:else}
                     <p id="todoItem-{todo.id}" onclick={() => editingTaskId = todo.id}>{index + 1}.{todo.titulo}</p>

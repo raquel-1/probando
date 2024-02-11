@@ -17,11 +17,11 @@
     },
     {
       "id": "14",
-      "titulo": "Preparar la cena",
+      "titulo": "Preparar la comida",
       "completada": false
     },
     {
-      "titulo": "que de",
+      "titulo": "queso",
       "completada": false,
       "id": "15"
     }
