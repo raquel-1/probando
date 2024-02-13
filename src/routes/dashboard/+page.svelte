@@ -16,6 +16,21 @@ async function idEditar(taskId) {
     editingTaskId = taskId;
 }
 
+/**
+ let tasks = [];// Aquí almacenaremos las tareas obtenidas
+async function obtenerTareas() {
+    try {
+        tasks = await getTasks();
+        console.log('Tareas obtenidas:', tasks);
+    } catch (error) {
+        console.error('Error al obtener las tareas:', error);
+    }
+}
+
+// Llama a obtenerTareas al cargar la página
+obtenerTareas();
+ */
+
 
 async function addSubmit(event) {
     event.preventDefault();
@@ -130,17 +145,42 @@ async function actualizarPut(event, taskId, updatedTask) {
     <input type="text" bind:value={nuevoTitulo} placeholder="Ingrese el título de la nueva tarea" required />
     <button type="submit">ADD</button>
 </form>
-<!--
-<div class={"enterTodo " + (error ? "errorBorder" : "")}>
-        <input type="text" placeholder="Inserta tarea"/>
-        <button >ADD</button>
-    </div>
--->
+
     
 </div>
 
 
+<!--
 
+    <div class="mainContainer">
+    <div class="headerContainer">
+        <h1>Tareas</h1>
+    </div>
+    <main>
+        {#if tasks.length === 0}
+            <p>No hay tareas.</p>
+        {:else}
+            {#each tasks as task (task.id)}
+                <div class="todo">
+                    {#if editingTaskId === task.id}
+                        <form on:submit={(e) => e.preventDefault()} class="enterTodo">
+                            <input type="text" bind:value={task.titulo}>
+                            <button type="button" on:click={() => actualizarPatch(task.id, { titulo: task.titulo })}>Guardar</button>
+                        </form>
+                    {:else}
+                        <p id="todoItem-{task.id}" onclick={() => editingTaskId = task.id}>{index + 1}.{task.titulo}</p>
+                    {/if}
+
+                    <div class="acciones">
+                        <i class="far fa-edit" on:click={() => idEditar(task.id)}></i>
+                        <i class="far fa-trash-alt" on:click={() => eliminarTarea(task.id)}></i>
+                    </div>
+                </div>
+            {/each}
+        {/if}
+    </main>
+</div>
+-->
 
 
 

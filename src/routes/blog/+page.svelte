@@ -10,3 +10,5 @@
 		<li><a href="/blog/{slug}">{title}</a></li>
 	{/each}
 </ul>
+<h1>blog</h1>
+<p>this is the clog page.</p>

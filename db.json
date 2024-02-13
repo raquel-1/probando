@@ -1,9 +1,9 @@
 {
   "tareas": [
     {
+      "id": "1",
       "titulo": "Hacer la compra",
-      "completada": false,
-      "id": "1"
+      "completada": false
     },
     {
       "id": "2",
@@ -12,12 +12,12 @@
     },
     {
       "id": "3",
-      "titulo": "Eeeeestudiar para el examen",
+      "titulo": "Estudiar para el examen",
       "completada": false
     },
     {
-      "id": "14",
-      "titulo": "Preparar la comida",
+      "id": "4",
+      "titulo": "Estudiar",
       "completada": false
     }
   ]

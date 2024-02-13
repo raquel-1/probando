@@ -1,6 +1,6 @@
 <script>
 
-    import Autentificacion from "../components/Autentificacion.svelte"
+    import Autentificacion from "$lib/Autentificacion.svelte"
     
 </script>
     
